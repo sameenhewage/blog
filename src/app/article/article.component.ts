@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Article } from '../models/article';
 import { ArticleService } from '../services/article.service';
 
@@ -12,7 +13,12 @@ export class ArticleComponent implements OnInit {
 
   article: Article | undefined;
 
-  constructor(private activateRoute: ActivatedRoute, private articleService: ArticleService) {
+  constructor(
+    private activateRoute: ActivatedRoute, 
+    private articleService: ArticleService,
+    private router : Router,
+    private titleService : Title
+    ) {
   }
   async ngOnInit(): Promise<void> {
     this.getRouteArticleKey();
@@ -26,8 +32,13 @@ export class ArticleComponent implements OnInit {
   }
 
   getArticle(key: string) {
-    this.articleService.getArticle(key).subscribe(article => this.article = article);
-    console.log(this.article);
+    this.articleService.getArticle(key).subscribe(article => { 
+      if (article === undefined) {
+        this.router.navigateByUrl('404');
+      }
+      this.article = article;
+      this.titleService.setTitle(`${this.article.title} - SamDroidx-Blog`);
+    });
   }
 
 }
