@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Article } from '../models/article';
 import { ArticleService } from '../services/article.service';
+import { SharedService } from '../services/shared.service';
 
 @Component({
   selector: 'app-article',
@@ -14,11 +15,12 @@ export class ArticleComponent implements OnInit {
   article: Article | undefined;
 
   constructor(
-    private activateRoute: ActivatedRoute, 
+    private activateRoute: ActivatedRoute,
     private articleService: ArticleService,
-    private router : Router,
-    private titleService : Title
-    ) {
+    private router: Router,
+    private titleService: Title,
+    private sharedService: SharedService
+  ) {
   }
   async ngOnInit(): Promise<void> {
     this.getRouteArticleKey();
@@ -32,12 +34,12 @@ export class ArticleComponent implements OnInit {
   }
 
   getArticle(key: string) {
-    this.articleService.getArticle(key).subscribe(article => { 
+    this.articleService.getArticle(key).subscribe(article => {
       if (article === undefined) {
         this.router.navigateByUrl('404');
       }
       this.article = article;
-      this.titleService.setTitle(`${this.article.title} - SamDroidx-Blog`);
+      this.titleService.setTitle(`${this.article.title} - ${this.sharedService.blogTitle}`);
     });
   }
 
