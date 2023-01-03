@@ -6,11 +6,11 @@
                     class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">{{article.title}}</h5>
-                    <blockquote >{{article.date | date: 'mediumDate'}}</blockquote>
+                    <blockquote>{{article.date | date: 'mediumDate'}}</blockquote>
                     <p class="card-text">
                         {{article.content}}
                     </p>
-                    <a href="#" class="btn btn-primary">continue reading...</a>
+                    <a class="btn btn-primary" routerLink="/{{article.key}}">continue reading...</a>
                 </div>
             </div>
         </div>
